@@ -1,26 +1,63 @@
-#  Как работать с репозиторием финального задания
+# Kittygram
 
-## Что нужно сделать
+[![Main Kittygram workflow](https://github.com/Matvey53/kittygram_final/actions/workflows/main.yml/badge.svg)](https://github.com/Matvey53/kittygram_final/actions/workflows/main.yml)
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+Веб-приложение для публикации фотографий котиков: регистрация и вход по токену, лента, загрузка изображений, админка Django.
 
-## Как проверить работу с помощью автотестов
+Рабочий адрес:
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
+- Kittygram: https://kittygram.publicvm.com
+
+## Стек
+
+- Backend: Python 3.12, Django 5, Django REST Framework, Djoser, Gunicorn, PostgreSQL
+- Frontend: React
+- Инфраструктура: Docker, Docker Compose, Nginx
+- CI/CD: GitHub Actions, Docker Hub, деплой по SSH, уведомление в Telegram
+
+## Переменные окружения
+
+Скопируйте `.env.example` в `.env` и заполните значения:
+
+| Переменная | Описание |
+| --- | --- |
+| `SECRET_KEY` | Секретный ключ Django |
+| `DEBUG` | `True` или `False` (сравнение без учёта регистра) |
+| `ALLOWED_HOSTS` | Хосты через запятую, например `localhost,127.0.0.1,kittygram.publicvm.com` |
+| `CSRF_TRUSTED_ORIGINS` | Trusted origins через запятую, например `https://kittygram.publicvm.com` |
+| `USE_SQLITE` | `True` — SQLite для быстрых локальных проверок, иначе PostgreSQL |
+| `POSTGRES_DB` | Имя базы PostgreSQL |
+| `POSTGRES_USER` | Пользователь PostgreSQL |
+| `POSTGRES_PASSWORD` | Пароль PostgreSQL |
+| `DB_HOST` | Хост БД (`db` в Docker, `127.0.0.1` локально) |
+| `DB_PORT` | Порт PostgreSQL |
+
+## Локальный запуск в Docker
+
+Файл `docker-compose.yml` нужен только локально (в git не хранится). Пример:
+
+```bash
+cp .env.example .env
+docker compose up -d --build
 ```
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+Приложение будет доступно на http://localhost:9000
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
+## Продакшен
 
-## Чек-лист для проверки перед отправкой задания
+На сервере используется `docker-compose.production.yml` и образы с Docker Hub. Деплой выполняется GitHub Actions при пуше в `main`: тесты, сборка образов, `docker compose pull/up`, миграции, `collectstatic`.
 
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+Секреты репозитория: `DOCKER_USERNAME`, `DOCKER_PASSWORD`, `HOST`, `USER`, `SSH_KEY`, `TELEGRAM_TO`, `TELEGRAM_TOKEN`.
+
+## Тесты
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r backend/requirements.txt
+pytest
+```
+
+## Автор
+
+[Matvey53](https://github.com/Matvey53)

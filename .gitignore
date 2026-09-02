@@ -101,6 +101,9 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# Локальный compose (в репозитории только docker-compose.production.yml)
+docker-compose.yml
+
 # Environments
 .env
 .venv
