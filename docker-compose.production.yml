@@ -11,7 +11,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
-    image: matvey53/kittygram_backend
+    image: ${DOCKER_USERNAME}/kittygram_backend
     restart: always
     env_file: .env
     volumes:
@@ -20,13 +20,13 @@ services:
     depends_on:
       - db
   frontend:
-    image: matvey53/kittygram_frontend
+    image: ${DOCKER_USERNAME}/kittygram_frontend
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static:/frontend_static
   gateway:
-    image: matvey53/kittygram_gateway
+    image: ${DOCKER_USERNAME}/kittygram_gateway
     restart: always
     env_file: .env
     ports:

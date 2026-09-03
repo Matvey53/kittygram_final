@@ -26,6 +26,7 @@
 | `ALLOWED_HOSTS` | Хосты через запятую, например `localhost,127.0.0.1,kittygram.publicvm.com` |
 | `CSRF_TRUSTED_ORIGINS` | Trusted origins через запятую, например `https://kittygram.publicvm.com` |
 | `USE_SQLITE` | `True` — SQLite для быстрых локальных проверок, иначе PostgreSQL |
+| `DOCKER_USERNAME` | Логин Docker Hub (подставляется в имена образов) |
 | `POSTGRES_DB` | Имя базы PostgreSQL |
 | `POSTGRES_USER` | Пользователь PostgreSQL |
 | `POSTGRES_PASSWORD` | Пароль PostgreSQL |
